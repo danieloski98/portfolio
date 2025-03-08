@@ -6,6 +6,7 @@ import { motion, useInView } from "framer-motion"
 import React from 'react';
 import { ISkill } from "@/models/skills";
 import { SKILLS } from "@/utils/starpi";
+import { getSkills } from "@/functions/skills";
 
 export default function SkillsSection() {
     const ref = useRef(null)
@@ -15,15 +16,8 @@ export default function SkillsSection() {
 
     React.useEffect(() => {
         (async function () {
-            const skills = await (await SKILLS()).find({
-                populate: {
-                    image: {
-                        fields: ['url', 'formats', 'alternativeText']
-                    }
-                }
-            });
-            console.log(skills.data);
-            setSkills(skills.data as any);
+            const { data: skills, meta } = await getSkills();
+            setSkills(skills);
         })()
     }, [])
 
@@ -63,9 +57,9 @@ export default function SkillsSection() {
                             <Image
                                 src={`${process.env.NEXT_PUBLIC_STRAPI_IMAGE}${skill.image.url}` || "/placeholder.svg"}
                                 alt={skill.title}
-                                width={80}
-                                height={80}
-                                className="w-12 h-12 object-contain transition-transform duration-300 group-hover:scale-110"
+                                width={120}
+                                height={120}
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                             />
                         </div>
                         <span className="text-center font-medium">{skill.title}</span>

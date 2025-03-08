@@ -1,5 +1,3 @@
-'use client'
-import React from 'react'
 import Link from "next/link"
 import Image from "next/image"
 import { Github, Mail, Linkedin } from "lucide-react"
@@ -7,25 +5,11 @@ import { Button } from "@/components/ui/button"
 import SkillsSection from "@/components/skills-section"
 import ProjectCard from "@/components/project-card"
 import HeroSection from "@/components/hero-section"
-import { PROJECTS, SKILLS } from "@/utils/starpi"
-import { IProject } from '@/models/projects'
-import { ISkill } from '@/models/skills'
+import { getProjects } from '@/functions/projects'
 
-export default function Home() {
-  const [data, setData] = React.useState<IProject[]>([]);
+export default async function Home() {
 
-  React.useEffect(() => {
-    (async function () {
-      const projects = await (await PROJECTS()).find({
-        populate: {
-          image: {
-            fields: ['url', 'formats', 'alternativeText']
-          }
-        }
-      });
-      setData(projects.data as IProject[]);
-    })()
-  }, [])
+  const { data, meta } = await getProjects();
 
 
   return (
