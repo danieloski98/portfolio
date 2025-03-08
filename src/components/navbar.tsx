@@ -50,7 +50,7 @@ export default function Navbar() {
                 <div className="flex items-center justify-between">
                     <Link href="/" className="flex items-center gap-2" onClick={closeMenu}>
                         <Code className="h-6 w-6 text-sky-400" />
-                        <span className="font-bold text-xl">DevPortfolio</span>
+                        <span className="font-bold text-xl">Dandolla.dev</span>
                     </Link>
 
                     {/* Desktop Navigation */}

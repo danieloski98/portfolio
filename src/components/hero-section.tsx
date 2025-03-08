@@ -70,7 +70,7 @@ export default function HeroSection() {
                         transition={{ duration: 0.5, delay: 0.2 }}
                     >
                         <p className="text-xl md:text-2xl mb-8 text-gray-300">
-                            Building modern web applications with JavaScript, TypeScript, React, Node.js, and more.
+                            Building modern web applications with JavaScript, TypeScript, React, React native, java, springboot and more.
                         </p>
                     </motion.div>
 

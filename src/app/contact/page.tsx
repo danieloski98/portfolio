@@ -144,21 +144,21 @@ export default function ContactPage() {
                                     <Mail className="h-5 w-5 text-sky-400 mt-1" />
                                     <div>
                                         <h3 className="font-medium">Email</h3>
-                                        <p className="text-sm text-muted-foreground">contact@example.com</p>
+                                        <p className="text-sm text-muted-foreground">danielemmanuel257@gmail.com</p>
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-4">
                                     <Phone className="h-5 w-5 text-sky-400 mt-1" />
                                     <div>
                                         <h3 className="font-medium">Phone</h3>
-                                        <p className="text-sm text-muted-foreground">+1 (555) 123-4567</p>
+                                        <p className="text-sm text-muted-foreground">+234 80336345077</p>
                                     </div>
                                 </div>
                                 <div className="flex items-start gap-4">
                                     <MapPin className="h-5 w-5 text-sky-400 mt-1" />
                                     <div>
                                         <h3 className="font-medium">Location</h3>
-                                        <p className="text-sm text-muted-foreground">San Francisco, CA</p>
+                                        <p className="text-sm text-muted-foreground">Nigeria</p>
                                     </div>
                                 </div>
                             </CardContent>
@@ -166,7 +166,7 @@ export default function ContactPage() {
                                 <h3 className="font-medium">Social Media</h3>
                                 <div className="flex gap-4">
                                     <Button asChild variant="outline" size="icon">
-                                        <a href="https://github.com/username" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                                        <a href="https://github.com/danieloski98" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
                                             <svg
                                                 xmlns="http://www.w3.org/2000/svg"
                                                 width="24"
@@ -185,7 +185,7 @@ export default function ContactPage() {
                                     </Button>
                                     <Button asChild variant="outline" size="icon">
                                         <a
-                                            href="https://linkedin.com/in/username"
+                                            href="https://www.linkedin.com/in/daniel-emmanuel-652685145?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             aria-label="LinkedIn"
@@ -210,7 +210,7 @@ export default function ContactPage() {
                                     </Button>
                                     <Button asChild variant="outline" size="icon">
                                         <a
-                                            href="https://twitter.com/username"
+                                            href="https://twitter.com/jesseoski"
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             aria-label="Twitter"
