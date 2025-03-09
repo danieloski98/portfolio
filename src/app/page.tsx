@@ -76,7 +76,7 @@ export default async function Home() {
         </div>
         <div className="text-center mt-12">
           <Button asChild className="bg-sky-500 hover:bg-sky-600">
-            <Link href="https://github.com/username" target="_blank">
+            <Link href="/projects" >
               View More Projects
             </Link>
           </Button>

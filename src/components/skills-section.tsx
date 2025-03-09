@@ -5,7 +5,6 @@ import Image from "next/image"
 import { motion, useInView } from "framer-motion"
 import React from 'react';
 import { ISkill } from "@/models/skills";
-import { SKILLS } from "@/utils/starpi";
 import { getSkills } from "@/functions/skills";
 
 export default function SkillsSection() {
@@ -19,7 +18,7 @@ export default function SkillsSection() {
             const { data: skills, meta } = await getSkills();
             setSkills(skills);
         })()
-    }, [])
+    }, []);
 
     const container = {
         hidden: { opacity: 0 },
@@ -47,7 +46,7 @@ export default function SkillsSection() {
                 {skills.map((skill, index) => (
                     <motion.div key={skill.title} variants={item} className="flex flex-col items-center">
                         <div
-                            className="relative w-20 h-20 mb-4 rounded-xl flex items-center justify-center bg-gray-800 p-4 overflow-hidden group"
+                            className="relative w-20 h-20 mb-4 rounded-xl flex items-center justify-center bg-gray-800 p-0 overflow-hidden group"
                             style={{ boxShadow: `0 0 20px ${'purple'}20` }}
                         >
                             <div
