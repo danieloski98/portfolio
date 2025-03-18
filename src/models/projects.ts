@@ -12,7 +12,7 @@ export interface StrapiImage {
 export interface IProject {
     appstoreUrl: string;
     createdAt: string;
-    description: any[];
+    description: string;
     documentId: string;
     githubUrl: string;
     id: number;
@@ -23,5 +23,6 @@ export interface IProject {
     type: 'WEB'|'APP';
     updatedAt: string;
     image: StrapiImage;
-    liveLink: string
+    liveLink: string;
+    shortDescription: string;
 }

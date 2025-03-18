@@ -53,7 +53,7 @@ export default function ProjectCard({ project }: ProjectProps) {
 
                 <CardContent className="p-4 pt-0 flex-grow">
                     <CardDescription className="text-gray-400">
-                        <RichText content={project.description} maxLength={200} />
+                        <p className="text-white">{project?.shortDescription?.substring(0, 100)}</p>
                     </CardDescription>
                 </CardContent>
 
@@ -73,7 +73,7 @@ export default function ProjectCard({ project }: ProjectProps) {
                     )}
                     {(
                         <Button asChild size="sm" className="flex-1 bg-sky-500 hover:bg-sky-600">
-                            <Link href={`/projects/${project.slug}`} rel="noopener noreferrer" className="flex items-center gap-2">
+                            <Link href={`/projects/${project.documentId}`} rel="noopener noreferrer" className="flex items-center gap-2">
                                 <ExternalLink className="h-4 w-4" />
                                 Details
                             </Link>

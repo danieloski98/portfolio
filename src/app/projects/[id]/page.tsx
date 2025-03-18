@@ -8,37 +8,51 @@ import { Separator } from "@/components/ui/separator"
 import { Card, CardContent } from "@/components/ui/card"
 import { projects } from "@/lib/projects-data"
 import MarkdownRenderer from "@/components/markdown-renderer"
+import API_URL, { urls } from "@/utils/url"
+import { IStrapiApiResponse } from "@/models/StrapiApiResponse"
+import { IProject } from "@/models/projects"
+import { param } from "framer-motion/client"
 
 interface ProjectPageProps {
-    params: {
-        slug: string
-    }
+    params: Promise<{
+        id: string
+    }>
 }
 
 export async function generateMetadata({ params }: ProjectPageProps) {
-    const project = projects.find((p) => p.slug === params.slug)
+    const { id } = await params;
+    const data = await fetch(`${API_URL}${urls.projects}/${id}?populate=*`);
+    const project: IStrapiApiResponse<IProject> = await data.json();
 
+    console.log(project);
     if (!project) {
         return {
             title: "Project Not Found",
             description: "The requested project could not be found.",
+         
+
         }
     }
 
     return {
-        title: `${project.title} | Developer Portfolio`,
-        description: project.shortDescription || project.description.substring(0, 160),
+        title: `${project?.data?.title} | Developer Portfolio`,
+        description: project?.data?.shortDescription?.substring(0, 160),
+        images: [
+            {
+                url: `${process.env.NEXT_PUBLIC_STRAPI_IMAGE}${project?.data?.image?.url}`,
+                alt: project?.data?.title,
+            },
+        ],
+        keywords: ["portfolio", "projects", "web development", "programming"],
     }
 }
 
-export async function generateStaticParams() {
-    return projects.map((project) => ({
-        slug: project.slug,
-    }))
-}
+export default async function ProjectPage({ params }: ProjectPageProps) {
+    const { id } = await params;
+    const data = await fetch(`${API_URL}${urls.projects}/${id}?populate=*`);
+    const project: IStrapiApiResponse<IProject> = await data.json();
 
-export default function ProjectPage({ params }: ProjectPageProps) {
-    const project = projects.find((p) => p.slug === params.slug)
+    console.log(project);
 
     if (!project) {
         notFound()
@@ -53,10 +67,14 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                         Back to Projects
                     </Link>
 
-                    <h1 className="text-3xl md:text-4xl font-bold mb-4">{project.title}</h1>
+                    <div className="overflow-hidden w-[60px] h-[60px] rounded-full">
+                        <Image src={`${process.env.NEXT_PUBLIC_STRAPI_IMAGE}${project?.data?.image?.url}` || "/placeholder.svg"} alt={project?.data?.title} className="object-contain w-full h-full" priority width={60} height={60}  />
+                    </div>
+
+                    <h1 className="text-3xl md:text-4xl font-bold mb-4 mt-4">{project?.data?.title}</h1>
 
                     <div className="flex flex-wrap gap-2 mb-6">
-                        {project.techStack.map((tech, index) => (
+                        {project?.data?.technologies?.map((tech: string, index: number) => (
                             <Badge key={index} variant="secondary" className="bg-sky-500/10 text-sky-400 hover:bg-sky-500/20">
                                 {tech}
                             </Badge>
@@ -64,59 +82,55 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                     </div>
 
                     <div className="flex flex-wrap gap-6 text-sm text-muted-foreground mb-6">
-                        {project.date && (
+                        {project?.data?.createdAt && (
                             <div className="flex items-center gap-2">
                                 <Calendar className="h-4 w-4" />
-                                <span>{project.date}</span>
+                                <span>{new Intl.DateTimeFormat('en-GB', { day: '2-digit', month: '2-digit', year: 'numeric' }).format(new Date(project?.data?.createdAt))}</span>
                             </div>
                         )}
-                        {project.duration && (
-                            <div className="flex items-center gap-2">
-                                <Clock className="h-4 w-4" />
-                                <span>{project.duration}</span>
-                            </div>
-                        )}
+                       
                     </div>
 
                     <div className="flex flex-wrap gap-4 mb-8">
-                        <Button asChild className="bg-sky-500 hover:bg-sky-600">
-                            <Link
-                                href={project.liveLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-2"
-                            >
-                                <ExternalLink className="h-4 w-4" />
-                                View Live Demo
-                            </Link>
-                        </Button>
-                        <Button asChild variant="outline">
-                            <Link
-                                href={project.githubLink}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="flex items-center gap-2"
-                            >
-                                <Github className="h-4 w-4" />
-                                View Source Code
-                            </Link>
-                        </Button>
+                        {project?.data?.liveLink && (
+                            <Button asChild className="bg-sky-500 hover:bg-sky-600">
+                                <Link
+                                    href={project?.data?.liveLink ?? ''}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-2"
+                                >
+                                    <ExternalLink className="h-4 w-4" />
+                                    View Live Demo
+                                </Link>
+                            </Button>
+                        )}
+                        {project?.data?.githubUrl && (
+                            <Button asChild variant="outline">
+                                <Link
+                                    href={project?.data?.githubUrl ?? ''}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="flex items-center gap-2"
+                                >
+                                    <Github className="h-4 w-4" />
+                                    View Source Code
+                                </Link>
+                            </Button>
+                        )}
                     </div>
                 </div>
 
-                <div className="relative w-full h-[400px] mb-8 rounded-lg overflow-hidden">
-                    <Image src={project.image || "/placeholder.svg"} alt={project.title} fill className="object-cover" priority />
-                </div>
 
                 <Card className="mb-8 border-sky-500/20">
                     <CardContent className="p-6">
                         <div className="prose prose-invert max-w-none prose-headings:text-sky-400 prose-a:text-sky-400">
-                            <MarkdownRenderer content={project.description} />
+                            <MarkdownRenderer content={project?.data?.description} />
                         </div>
                     </CardContent>
                 </Card>
 
-                {project.screenshots && project.screenshots.length > 0 && (
+                {/* {project.screenshots && project.screenshots.length > 0 && (
                     <div className="mb-8">
                         <h2 className="text-2xl font-bold mb-4">Screenshots</h2>
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -132,16 +146,16 @@ export default function ProjectPage({ params }: ProjectPageProps) {
                             ))}
                         </div>
                     </div>
-                )}
+                )} */}
 
-                {project.challenges && (
+                {/* {project.challenges && (
                     <div className="mb-8">
                         <h2 className="text-2xl font-bold mb-4">Challenges & Solutions</h2>
                         <div className="prose prose-invert max-w-none prose-headings:text-sky-400 prose-a:text-sky-400">
                             <MarkdownRenderer content={project.challenges} />
                         </div>
                     </div>
-                )}
+                )} */}
 
                 <Separator className="my-8" />
 
@@ -154,7 +168,7 @@ export default function ProjectPage({ params }: ProjectPageProps) {
 
                 <div className="grid md:grid-cols-2 gap-6 mt-6">
                     {projects
-                        .filter((p) => p.slug !== project.slug)
+                        .filter((p) => p.slug !== project?.data?.slug)
                         .slice(0, 2)
                         .map((relatedProject, index) => (
                             <Card
